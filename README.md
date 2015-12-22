@@ -1,10 +1,14 @@
+Estrutura de Menus do Programa: 
+
 <---- MENU PRINCIPAL ---->
 - 1 - Alunos
 - 2 - Docentes
 - 3 - Disciplinas
+- 4 - Horario das Disciplinas
+- 5 - Disciplinas do Aluno
+- 0 - Sair
 
 <---- ALUNOS ---->
-- 0 - Menu Principal
 - 1 - Importar
 - 2 - Inserir
 - 3 - Alterar
@@ -20,12 +24,11 @@
 - 0 - Menu Principal
 
 <---- DOCENTES ---->
-- 0 - Menu Principal
 - 1 - Importar 
 - 2 - Inserir
 - 3 - Eliminar
 - 4 - Listar Tudo
-
+- 0 - Menu Principal
 
 <---- DISCIPLINAS ---->
 - 0 - Menu Principal
@@ -33,3 +36,12 @@
 - 2 - Eliminar
 - 3 - Listar Tudo 
 
+<---- HORARIO DAS DISCIPLINAS ---->
+- 1 - Inserir
+- 2 - Eliminar
+- 3 - Listar
+
+<---- DISCIPLINAS DO ALUNO ---->
+- 1 - Inserir
+- 2 - Eliminar
+- 3 - Listar
