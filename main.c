@@ -319,50 +319,54 @@ void ImportarDocentes() {
     return;
 }
 
-int main(int argc, char** argv) {
+void MenuAlunos() {
     char op;
     char *ficheiro_alunos = "ALUNOS.DAT";
 
-    setlocale(LC_ALL, "Portuguese");
-
     ALUNO *alunos = 0;
     int numAlunos;
+
     alunos = LerAlunosVetor("ALUNOS.DAT", &numAlunos);
 
     do {
         system("clear");
-        printf("%s\n", "Gest�o de Alunos");
-        printf("%s\n", "1 - Inserir");
-        printf("%s\n", "2 - Alterar");
-        printf("%s\n", "3 - Eliminar");
-        printf("%s\n", "4 - Listar Tudo");
-        printf("%s\n", "5 - Pesquisa por Nome");
-        printf("%s\n", "6 - Voltar");
-        printf("%s\n", "n - Listar Tudo por nome");
-        printf("%s\n", "0 - Terminar");
+        printf("%s\n", ".:: ALUNOS ::.\n");
+        printf("%s\n", "- 1 - Importar");
+        printf("%s\n", "- 2 - Inserir");
+        printf("%s\n", "- 3 - Alterar");
+        printf("%s\n", "- 4 - Eliminar");
+        printf("%s\n", "- 5 - Listar Tudo");
+        printf("%s\n", "- 6 - Pesquisar");
+        printf("%s\n", "- 7 - Resumir");
+        printf("%s\n", "- 8 - Agrupar");
+        printf("%s\n", "- 9 - Contabilizar");
+        printf("%s\n", "- A - Gerar Horario A4");
+        printf("%s\n", "- B - Gerar Horario Cartao de Credito");
+        printf("%s\n", "- C - Classificar Qualidade de Horarios");
+        printf("%s\n", "- 0 - Menu Principal");
 
         scanf(" %c", &op);
 
         switch (op) {
-            case '0': return 1;
+            case '0':
+                MenuPrincipal();
+                pausa("");
                 break;
 
-            case '1': InserirAluno(ficheiro_alunos);
+            case '1':
+                ImportarDados();
+                pausa("");
                 break;
-
-            case '4': ListarTodos(ficheiro_alunos);
+            case '2':
+                InserirAluno(ficheiro_alunos);
+                pausa("");
+                break;
+            case '5': ListarTodos(ficheiro_alunos);
                 pausa(" ");
                 break;
-            case '7': ImportarDados();
+            case '7':;
                 pausa("");
                 break;
-            case '8': ImportarDisciplinas();
-                pausa("");
-                break;
-            case '9': ImportarDocentes();
-                pausa("");
-                break;
-
             case 'n':
                 ListarPorNome(ficheiro_alunos);
                 pausa("");
@@ -373,6 +377,106 @@ int main(int argc, char** argv) {
         }
     } while (1);
 
+}
+
+void MenuDocentes() {
+    char op;
+
+    do {
+        system("clear");
+        // system("cls") -> windows
+        printf("%s\n", ".:: DOCENTES ::. \n");
+        printf("%s\n", "- 1 - Inserir");
+        printf("%s\n", "- 2 - Eliminar");
+        printf("%s\n", "- 3 - Listar");
+        printf("%s\n", "- 0 - Menu Principal");
+
+        scanf(" %c", &op);
+
+        switch (op) {
+            case '0':
+                MenuPrincipal();
+                pausa("");
+                break;
+            case '1':
+
+
+            default:
+                break;
+        }
+    } while (1);
+}
+
+void MenuDisciplinas() {
+    char op;
+
+    do {
+        system("clear");
+        // system("cls") -> windows
+        printf("%s\n", ".:: DISCIPLINAS ::.\n");
+        printf("%s\n", "- 1 - Inserir");
+        printf("%s\n", "- 2 - Eliminar");
+        printf("%s\n", "- 3 - Listar");
+        printf("%s\n", "- 0 - Menu Principal");
+
+        scanf(" %c", &op);
+
+        switch (op) {
+            case '0':
+                MenuPrincipal();
+                pausa("");
+                break;
+            case '1':
+
+
+            default:
+                break;
+        }
+    } while (1);
+}
+
+void MenuPrincipal() {
+    char op;
+
+    setlocale(LC_ALL, "Portuguese");
+
+    do {
+        system("clear");
+        // system("cls") -> windows
+        printf("%s\n", ".:: MENU PRINCIPAL ::.\n");
+        printf("%s\n", "- 1 - Alunos");
+        printf("%s\n", "- 2 - Docentes");
+        printf("%s\n", "- 3 - Disciplinas");
+        printf("%s\n", "- 4 - Horario das Disciplinas");
+        printf("%s\n", "- 5 - Disciplinas do Aluno");
+        printf("%s\n", "- 0 - Sair");
+
+        scanf(" %c", &op);
+
+        switch (op) {
+            case '0':
+                exit(0);
+            case '1':
+                MenuAlunos();
+                pausa("");
+                break;
+            case '2':
+                MenuDocentes();
+                pausa("");
+                break;
+            case '3':
+                MenuDisciplinas();
+                pausa("");
+            default:
+                break;
+        }
+    } while (1);
+}
+
+int main(int argc, char** argv) {
+
+    MenuPrincipal();
+    pausa("");
     return 0;
 }
 
