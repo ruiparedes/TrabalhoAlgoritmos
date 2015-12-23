@@ -127,6 +127,55 @@ int ListarTodos(char *ficheiro_alunos) {
     return 1;
 }
 
+void AlterarAlunoPorCodigo(char *nome_ficheiro) {
+    system("clear");
+    //system("cls"); -> windows
+
+    ALUNO a;
+
+    int codigo;
+    printf("%s", "Codigo do aluno a alterar? ");
+    scanf("%d", &codigo);
+
+    FILE *f, *fp;
+    int i = 0;
+
+    f = fopen(nome_ficheiro, "r+b");
+    fp = fopen("tmp.bin", "w+b");
+
+    fseek(f, 0, SEEK_END);
+    int nr = ftell(f) / sizeof (a); // Numero de registos
+    fseek(f, 0, SEEK_SET);
+
+    for (i = 0; i < nr; i++) {
+        fread(&a, sizeof (a), 1, f);
+
+        if (a.codigo == codigo) {
+            __fpurge(stdin);
+            //fflush(stdin); -> windows
+            printf("%s\n", "Nome? ");
+            scanf("%49[^\n]%*c", a.nome);
+            printf("%s\n", "Data de Nascimento? ");
+            scanf("%i-%i-%i", &a.data_nascimento.dia, &a.data_nascimento.mes, &a.data_nascimento.ano);
+            __fpurge(stdin);
+            printf("%s\n", "Morada? ");
+            scanf("%49[^\n]%*c", a.morada);
+            printf("%s\n", "Email? ");
+            scanf("%s", a.email);
+            printf("%s\n", "Contacto? ");
+            scanf("%s", a.contacto);
+            fwrite(&a, sizeof (a), 1, fp);
+        } else {
+            fwrite(&a, sizeof (a), 1, fp);
+        }
+    }
+    fclose(f);
+    fclose(fp);
+
+    remove(nome_ficheiro);
+    rename("tmp.bin", nome_ficheiro);
+}
+
 void EliminarAlunoPorCodigo(char *nome_ficheiro) {
     system("clear");
     //system("cls"); -> windows
@@ -410,6 +459,7 @@ void MenuAlunos() {
                 pausa("");
                 break;
             case '3':
+                AlterarAlunoPorCodigo(ficheiro_alunos);
                 pausa("");
                 break;
             case '4':
