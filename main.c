@@ -14,12 +14,20 @@ typedef struct {
     char nome[50];
     char email[50];
     char morada[50];
-    char codigoPosta[20];
-    char localidade[50];
+    //   char codigoPostal[20];
+    //  char localidade[50];
     char contacto[9];
     DATA data_nascimento;
 
 } ALUNO;
+
+typedef struct {
+    int codigo;
+    char nome[50];
+    char email[50];
+    char contacto[9];
+    char disciplina[60];
+} DOCENTE;
 
 typedef struct {
     char codigo[15];
@@ -43,7 +51,9 @@ int InserirAluno(char *ficheiro_alunos) {
     ALUNO a;
     FILE *f;
 
-    printf("%s\n", "Inserir Aluno ");
+    system("clear");
+    //system("cls"); ->windows
+    printf("%s\n", ".:: Inserir Aluno ::. \n ");
     printf("%s\n", "Codigo? ");
     scanf("%i", &a.codigo);
     __fpurge(stdin);
@@ -100,7 +110,7 @@ ALUNO *LerAlunosVetor(char *nome_ficheiro, int *N) {
 /* ################# FIM DE VETORES ##################*/
 
 
-int ListarTodos(char *ficheiro_alunos) {
+void ListarAlunos(char *ficheiro_alunos) {
     system("clear");
     //system("cls"); -> windows
 
@@ -123,8 +133,6 @@ int ListarTodos(char *ficheiro_alunos) {
     fwrite(&a, sizeof (a), 1, f);
     fclose(f);
 
-
-    return 1;
 }
 
 void AlterarAlunoPorCodigo(char *nome_ficheiro) {
@@ -309,7 +317,7 @@ void ImportarDisciplinas() {
 
 }
 
-void ImportarDados() {
+void ImportarDadosAlunos() {
 
     system("clear");
     // system("cls"); . windows
@@ -344,7 +352,59 @@ void ImportarDados() {
     fclose(f);
 }
 
-void ImportarDocentes() {
+int InserirDocente(char *ficheiro_docentes) {
+    DOCENTE d;
+    FILE *f;
+
+    system("clear");
+    //system("cls"); -> windows
+
+    printf("%s\n", ".:: Inserir Docente ::. \n");
+    printf("%s\n", "Codigo? ");
+    scanf("%d", &d.codigo);
+    __fpurge(stdin);
+    //fflush(stdin); -> windows
+    printf("%s\n", "Nome? ");
+    scanf("%49[^\n]%*c", d.nome);
+    printf("%s\n", "Disciplina? ");
+    scanf("%49[^\n]%*c", d.disciplina);
+    printf("%s\n", "Email? ");
+    scanf("%s", d.email);
+    printf("%s\n", "Contacto? ");
+    scanf("%s", d.contacto);
+
+    f = fopen(ficheiro_docentes, "a+b"); //a - append; + - cria se nao existir; b - binario
+    fwrite(&d, sizeof (d), 1, f);
+    fclose(f);
+}
+
+void ListarDocentes(char *ficheiro_docentes) {
+    system("clear");
+    //system("cls"); -> windows
+
+    DOCENTE d;
+    FILE *f;
+    int i = 0;
+
+    printf("%s\n", ".:: Lista de Docentes ::. \n");
+    printf("%10s %-50s %-18s %-50s %-50s %-10s", "Codigo", "Nome", "Disciplina", "Email", "Contacto");
+
+    f = fopen(ficheiro_docentes, "rb");
+    fseek(f, 0, SEEK_END);
+    int nr = ftell(f) / sizeof (d); // Numero de registos
+    fseek(f, 0, SEEK_SET);
+
+    for (i = 0; i < nr; i++) {
+        fread(&d, sizeof (d), 1, f);
+        printf("%10i %-50s %-50s %-50s %-10s", d.codigo, d.nome, d.disciplina, d.email, d.contacto);
+    }
+
+    fwrite(&d, sizeof (d), 1, f);
+    fclose(f);
+
+}
+
+void ImportarDocentes(char* ficheiro_docentes) {
 
     FILE *f;
     DISCIPLINA d;
@@ -358,7 +418,7 @@ void ImportarDocentes() {
         return;
     }
     FILE *f2;
-    f2 = fopen("DOCENTES.DAT", "wb");
+    f2 = fopen(ficheiro_docentes, "wb");
     if (f2 == NULL) {
         printf("erro");
         return;
@@ -451,7 +511,7 @@ void MenuAlunos() {
                 break;
 
             case '1':
-                ImportarDados();
+                ImportarDadosAlunos();
                 pausa("");
                 break;
             case '2':
@@ -466,7 +526,7 @@ void MenuAlunos() {
                 EliminarAlunoPorCodigo(ficheiro_alunos);
                 pausa("");
                 break;
-            case '5': ListarTodos(ficheiro_alunos);
+            case '5': ListarAlunos(ficheiro_alunos);
                 pausa(" ");
                 break;
             case '7':;
@@ -487,13 +547,18 @@ void MenuAlunos() {
 void MenuDocentes() {
     char op;
 
+
+    char *ficheiro_docentes = "DOCENTES.DAT";
+    remove("DOCENTES.DAT");
+
     do {
         system("clear");
         // system("cls") . windows
         printf("%s\n", ".:: DOCENTES ::. \n");
         printf("%s\n", "- 1 - Inserir");
         printf("%s\n", "- 2 - Eliminar");
-        printf("%s\n", "- 3 - Listar");
+        printf("%s\n", "- 3 - Listar Tudo");
+        printf("%s\n", "- 4 - Importar");
         printf("%s\n", "- 0 - Menu Principal");
 
         scanf(" %c", &op);
@@ -504,7 +569,17 @@ void MenuDocentes() {
                 pausa("");
                 break;
             case '1':
-
+                InserirDocente(ficheiro_docentes);
+                pausa("");
+                break;
+            case '3':
+                ListarDocentes(ficheiro_docentes);
+                pausa("");
+                break;
+            case '4':
+                ImportarDocentes(ficheiro_docentes);
+                pausa("");
+                break;
 
             default:
                 break;
